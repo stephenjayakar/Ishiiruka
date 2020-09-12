@@ -150,8 +150,9 @@ class SlippiNetplayClient
 	std::unique_ptr<SlippiRemotePadOutput> GetSlippiRemotePad(int32_t curFrame, int index);
 	void SlippiNetplayClient::DropOldRemoteInputs(int32_t curFrame);
 	SlippiMatchInfo *GetMatchInfo();
-	//u64 GetSlippiPing();
-	int32_t GetSlippiLatestRemoteFrame();
+	u64 GetSlippiPing();
+    int32_t GetSlippiLatestRemoteFrame();
+    u8 GetSlippiRemoteChatMessage();
 	s32 CalcTimeOffsetUs();
 
 	void WriteChatMessageToPacket(sf::Packet &packet, int messageId);
@@ -197,8 +198,9 @@ class SlippiNetplayClient
 	bool isConnectionSelected = false;
 	bool isDecider = false;
 	bool hasGameStarted = false;
-	u8 playerIdx = 0;
-
+	FrameTiming lastFrameTiming;
+	u64 pingUs;
+	u8 remoteChatMessageId; // most recent chat message id from opponent
 	std::deque<std::unique_ptr<SlippiPad>> localPadQueue;  // most recent inputs at start of deque
 	std::deque<std::unique_ptr<SlippiPad>>
 	    remotePadQueue[SLIPPI_REMOTE_PLAYER_MAX]; // most recent inputs at start of deque
