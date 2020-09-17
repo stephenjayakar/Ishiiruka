@@ -17,7 +17,6 @@
 
 #include "DolphinWX/Frame.h"
 #include "DolphinWX/Main.h"
-#include "DolphinWX/SlippiAuthWebView/SlippiAuthWebView.h"
 
 #include <codecvt>
 #include <locale>
@@ -153,31 +152,6 @@ bool SlippiUser::AttemptLogin()
 // them to place the file).
 void SlippiUser::OpenLogInPage()
 {
-#ifdef _WIN32
-    // Uncomment this if Windows is in a position to try the login flow.
-    //
-    // if (!SlippiAuthWebView::IsAvailable())
-    // {
-    std::string url = "https://slippi.gg/online/enable";
-    std::string path = File::GetSlippiUserJSONPath();;
-    
-    // On windows, sometimes the path can have backslashes and slashes mixed, convert all to backslashes
-    path = ReplaceAll(path, "\\", "\\");
-    path = ReplaceAll(path, "/", "\\");
-    
-    std::string fullUrl = url + "?path=" + path;
-    INFO_LOG(SLIPPI_ONLINE, "[User] Login at path: %s", fullUrl.c_str());
-
-    std::string command = "explorer \"" + fullUrl + "\"";
-    RunSystemCommand(command);
-    return;
-    // }
-#endif
-    
-    // macOS and Linux have stable WebView components that we can use to
-    // enable an easier login flow for users. On macOS, this is backed by
-    // the system-integrated WebKit framework. On Linux, this is provided
-    // by linking Webkit2.
     CFrame* cframe = wxGetApp().GetCFrame();
     cframe->OpenSlippiAuthenticationDialog();
 }
@@ -267,33 +241,6 @@ void SlippiUser::FileListenThread()
 
 		Common::SleepCurrentThread(500);
 	}
-}
-
-// On Linux platforms, the user.json file lives in the XDG_CONFIG_HOME/SlippiOnline
-// directory in order to deal with the fact that we want the configuration for AppImage
-// builds to be mutable.
-std::string SlippiUser::getUserFilePath()
-{
-#if defined(__APPLE__)
-	std::string userFilePath = File::GetBundleDirectory() + "/Contents/Resources" + DIR_SEP + "user.json";
-#elif defined(_WIN32)
-	std::string userFilePath = File::GetExeDirectory() + DIR_SEP + "user.json";
-#else
-	std::string userFilePath = File::GetUserPath(F_USERJSON_IDX);
-#endif
-	return userFilePath;
-}
-
-std::string SlippiUser::getDoublesFilePath()
-{
-#if defined(__APPLE__)
-	std::string userFilePath = File::GetBundleDirectory() + "/Contents/Resources" + DIR_SEP + "doubles.json";
-#elif defined(_WIN32)
-	std::string userFilePath = File::GetExeDirectory() + DIR_SEP + "doubles.json";
-#else
-	std::string userFilePath = File::GetUserPath(F_USERJSON_IDX);
-#endif
-	return userFilePath;
 }
 
 inline std::string readString(json obj, std::string key)
