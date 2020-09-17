@@ -726,7 +726,7 @@
 #define wxUSE_SYSTEM_OPTIONS 1
 
 // wxSound class
-#define wxUSE_SOUND      0
+#define wxUSE_SOUND      1
 
 // Use wxMediaCtrl
 //
