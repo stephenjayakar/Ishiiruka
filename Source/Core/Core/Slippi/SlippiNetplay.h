@@ -123,22 +123,6 @@ class SlippiNetplayClient
 		NET_CONNECT_STATUS_DISCONNECTED,
 	};
 
-
-	std::unordered_map<u8, std::string> predefinedChatMessages = {
-		{CM_PAD_LEFT, "GGs!"},
-		{CM_PAD_RIGHT, "BRB"},
-		{CM_PAD_DOWN, "Last!"},
-		{CM_PAD_UP, "One More"},
-		{CM_L_PAD_LEFT, "G2G"},
-		{CM_L_PAD_RIGHT, "OK"},
-		{CM_L_PAD_DOWN, "Nope"},
-		{CM_L_PAD_UP, "Back"},
-		{CM_R_PAD_LEFT, "Awesome!"},
-		{CM_R_PAD_RIGHT, "Sorry"},
-		{CM_R_PAD_DOWN, "Thanks!"},
-		{CM_R_PAD_UP, "Please"},
-	};
-
 	bool IsDecider();
 	bool IsConnectionSelected();
 	u8 LocalPlayerPort();
