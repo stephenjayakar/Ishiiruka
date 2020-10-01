@@ -40,9 +40,9 @@ fi
 # Delete the AppDir folder to prevent build issues
 rm -rf ./AppDir/
 
-# Add the linux-env script to the AppDir prior to running linuxdeploy
-mkdir -p ${APPDIR_HOOKS}
-cp Data/linux-env.sh ${APPDIR_HOOKS}
+mkdir -p ./AppDir/apprun-hooks/
+
+echo 'export LD_LIBRARY_PATH="/usr/lib/:$LD_LIBRARY_PATH"' >> ./AppDir/apprun-hooks/arch_linux_env.sh
 
 # Build the AppDir directory for this image
 mkdir -p AppDir
