@@ -33,6 +33,8 @@
 static std::mutex pad_mutex;
 static std::mutex ack_mutex;
 
+SlippiNetplayClient* SLIPPI_NETPLAY = nullptr;
+
 // called from ---GUI--- thread
 SlippiNetplayClient::~SlippiNetplayClient()
 {
@@ -54,6 +56,8 @@ SlippiNetplayClient::~SlippiNetplayClient()
 		enet_host_destroy(m_client);
 		m_client = nullptr;
 	}
+
+	SLIPPI_NETPLAY = nullptr;
 
 	WARN_LOG(SLIPPI_ONLINE, "Netplay client cleanup complete");
 }
@@ -88,6 +92,7 @@ SlippiNetplayClient::SlippiNetplayClient(const std::string addrs[], const u16 po
 
 		j++;
 	}
+	SLIPPI_NETPLAY = std::move(this);
 
 	// Local address
 	ENetAddress *localAddr = nullptr;
@@ -144,6 +149,7 @@ SlippiNetplayClient::SlippiNetplayClient(const std::string addrs[], const u16 po
 SlippiNetplayClient::SlippiNetplayClient(bool isDecider)
 {
 	this->isDecider = isDecider;
+	SLIPPI_NETPLAY = std::move(this);
 	slippiConnectStatus = SlippiConnectStatus::NET_CONNECT_STATUS_FAILED;
 }
 
@@ -442,6 +448,7 @@ void SlippiNetplayClient::Disconnect()
 		enet_peer_reset(m_server[i]);
 	}
 	m_server.clear();
+	SLIPPI_NETPLAY = nullptr;
 }
 
 void SlippiNetplayClient::SendAsync(std::unique_ptr<sf::Packet> packet)
