@@ -192,13 +192,6 @@ bool IsRunning()
 	return (GetState() != CORE_UNINITIALIZED || s_hardware_initialized) && !s_is_stopping;
 }
 
-
-bool IsConnected()
-{
-    return SLIPPI_NETPLAY != nullptr;
-}
-
-
 bool IsRunningAndStarted()
 {
 
@@ -709,8 +702,8 @@ void SetState(EState state)
 		return;
 
 	// Do not allow any kind of cpu pause/resum if we are connected to someone on slippi
-	if (IsConnected())
-	    return;
+    if(IsOnline())
+        return;
 
     switch (state)
 	{
@@ -781,6 +774,7 @@ static std::string GenerateScreenshotName()
 
 void SaveScreenShot()
 {
+    if(IsOnline()) return;
 	const bool bPaused = (GetState() == CORE_PAUSE);
 
 	SetState(CORE_PAUSE);
