@@ -14,6 +14,10 @@
 #include "VideoBackends/Software/VideoBackend.h"
 #include "VideoBackends/Vulkan/VideoBackend.h"
 
+#if defined(VK_USE_PLATFORM_METAL_EXT)
+#include <objc/message.h>
+#endif
+
 std::vector<std::unique_ptr<VideoBackendBase>> g_available_video_backends;
 VideoBackendBase* g_video_backend = nullptr;
 static VideoBackendBase* s_default_backend = nullptr;
@@ -80,7 +84,11 @@ void VideoBackendBase::PopulateList()
 #endif
 	// disable OGL video Backend while is merged from master
 	g_available_video_backends.push_back(std::make_unique<OGL::VideoBackend>());
-	g_available_video_backends.push_back(std::make_unique<Vulkan::VideoBackend>());
+
+    if(PlatformSupportsVulkan()) {
+	    g_available_video_backends.push_back(std::make_unique<Vulkan::VideoBackend>());
+    }
+
 	// Disable software video backend as is currently not working
 	//g_available_video_backends.push_back(std::make_unique<SW::VideoSoftware>());
 
