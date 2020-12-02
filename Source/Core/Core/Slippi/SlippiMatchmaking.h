@@ -48,6 +48,7 @@ class SlippiMatchmaking
 	std::unique_ptr<SlippiNetplayClient> GetNetplayClient();
 	std::string GetErrorMessage();
 	SlippiUser::UserInfo GetOpponent();
+	int LocalPlayerIndex();
 
   protected:
 	const std::string MM_HOST_DEV = "104.154.50.102"; // Dev host
