@@ -9,7 +9,7 @@ on:
         - "**.ini"
   pull_request:
     branches:
-      - slippi
+      - "**"
     paths-ignore:
       - "**.md"
       - "**.ini"
