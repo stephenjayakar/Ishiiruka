@@ -128,6 +128,7 @@ class SlippiNetplayClient
 	bool IsConnectionSelected();
 	u8 LocalPlayerPort();
 	SlippiConnectStatus GetSlippiConnectStatus();
+	std::vector<int> GetFailedConnections();
 	void StartSlippiGame();
 	void SendConnectionSelected();
 	void SendSlippiPad(std::unique_ptr<SlippiPad> pad);
@@ -201,6 +202,7 @@ class SlippiNetplayClient
 	std::array<Common::FifoQueue<FrameTiming, false>, SLIPPI_REMOTE_PLAYER_MAX> ackTimers;
 
 	SlippiConnectStatus slippiConnectStatus = SlippiConnectStatus::NET_CONNECT_STATUS_UNSET;
+	std::vector<int> failedConnections;
 	SlippiMatchInfo matchInfo;
 
 	bool m_is_recording = false;
