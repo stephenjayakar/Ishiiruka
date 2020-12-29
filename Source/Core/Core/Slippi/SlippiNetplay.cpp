@@ -383,7 +383,7 @@ void SlippiNetplayClient::writeToPacket(sf::Packet &packet, SlippiPlayerSelectio
 	packet << s.playerIdx;
 	packet << s.stageId << s.isStageSelected;
 	packet << s.rngOffset;
-	packet << teamId;
+	packet << s.teamId;
 }
 
 void SlippiNetplayClient::WriteChatMessageToPacket(sf::Packet &packet, int messageId, int playerIdx)
@@ -420,6 +420,7 @@ std::unique_ptr<SlippiPlayerSelections> SlippiNetplayClient::readSelectionsFromP
 	packet >> s->isStageSelected;
 
 	packet >> s->rngOffset;
+	packet >> s->teamId;
 
 	packet >> teamId;
 
