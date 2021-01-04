@@ -890,26 +890,19 @@ void SlippiNetplayClient::SetMatchSelections(SlippiPlayerSelections& s)
 
 SlippiPlayerSelections SlippiNetplayClient::GetSlippiRemoteChatMessage()
 {
-    SlippiPlayerSelections copiedSelection = SlippiPlayerSelections();
-
-    if(remoteChatMessageSelection != nullptr){
-        copiedSelection.messageId = remoteChatMessageSelection->messageId;
-        copiedSelection.playerIdx = remoteChatMessageSelection->playerIdx;
-
-		// Clear it out
-		remoteChatMessageSelection->messageId = 0;
-		remoteChatMessageSelection->playerIdx = 0;
-    } else {
-        copiedSelection.messageId = 0;
-        copiedSelection.playerIdx = 0;
-    }
-
-
-    return copiedSelection;
+	if(!SConfig::GetInstance().m_slippiEnableQuickChat) {
+		return 0;
+	}
+	u8 copiedMessageId = remoteChatMessageId;
+	remoteChatMessageId = 0; // Clear it out
+	return copiedMessageId;
 }
 
 u8 SlippiNetplayClient::GetSlippiRemoteSentChatMessage()
 {
+	if(!SConfig::GetInstance().m_slippiEnableQuickChat) {
+		return 0;
+	}
 	u8 copiedMessageId = remoteSentChatMessageId;
 	remoteSentChatMessageId = 0; // Clear it out
 	return copiedMessageId;
