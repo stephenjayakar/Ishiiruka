@@ -1962,7 +1962,8 @@ void CEXISlippi::prepareOnlineMatchState()
 
 	u32 rngOffset = 0;
 	std::string localPlayerName = "";
-	std::string p1Name = "";
+    std::string oppName = "";
+    std::string p1Name = "";
 	std::string p2Name = "";
 	u8 chatMessageId = 0;
 	u8 chatMessagePlayerIdx = 0;
@@ -1975,7 +1976,7 @@ void CEXISlippi::prepareOnlineMatchState()
 	localChatMessageId = 0;
 	// in CSS p1 is always current player and p2 is opponent
 	localPlayerName = p1Name = "Player 1";
-	p2Name = "Player 2";
+	oppName = p2Name = "Player 2";
 #endif
 
 	m_read_queue.push_back(localPlayerReady);  // Local player ready
@@ -2002,7 +2003,7 @@ void CEXISlippi::prepareOnlineMatchState()
     if (localPlayerReady && remotePlayerReady)
 	{
 		auto isDecider = slippi_netplay->IsDecider();
-
+        u8 remotePlayerCount = matchmaking->RemotePlayerCount();
 		auto matchInfo = slippi_netplay->GetMatchInfo();
 		SlippiPlayerSelections lps = matchInfo->localPlayerSelections;
 		auto rps = matchInfo->remotePlayerSelections;
@@ -2028,13 +2029,16 @@ void CEXISlippi::prepareOnlineMatchState()
             rps[i].isCharacterSelected = true;
         }
 
+        if(lastSearch.mode == SlippiMatchmaking::OnlinePlayMode::TEAMS){
+            remotePlayerCount = 4;
+        }
+
 		oppName = std::string("Player");
 #endif
 
 		// Check if someone is picking dumb characters in non-direct
 		auto localCharOk = lps.characterId < 26;
 		auto remoteCharOk = true;
-		u8 remotePlayerCount = matchmaking->RemotePlayerCount();
 		INFO_LOG(SLIPPI_ONLINE, "remotePlayerCount: %d", remotePlayerCount);
 		for (int i = 0; i < remotePlayerCount; i++)
 		{
@@ -2166,12 +2170,14 @@ void CEXISlippi::prepareOnlineMatchState()
 
 	#ifdef LOCAL_TESTING
 	std::string defaultNames[] = {"Player 1", "Player 2", "Player 3", "Player 4"};
-	names = defaultNames;
 	#endif
 
 	for (int i = 0; i < 4; i++)
 	{
 		std::string name = matchmaking->GetPlayerName(i);
+        #ifdef LOCAL_TESTING
+            name = defaultNames[i];
+        #endif
 		name = ConvertStringForGame(name, MAX_NAME_LENGTH);
 		m_read_queue.insert(m_read_queue.end(), name.begin(), name.end());
 	}
@@ -2194,7 +2200,7 @@ void CEXISlippi::prepareOnlineMatchState()
 	}
 	if (matchmaking->RemotePlayerCount() == 1)
 		oppText = matchmaking->GetPlayerName(remotePlayerIndex);
-	std::string oppName = ConvertStringForGame(oppText, MAX_NAME_LENGTH*2 + 1);
+	oppName = ConvertStringForGame(oppText, MAX_NAME_LENGTH*2 + 1);
 	m_read_queue.insert(m_read_queue.end(), oppName.begin(), oppName.end());
 
 	// Add error message if there is one
