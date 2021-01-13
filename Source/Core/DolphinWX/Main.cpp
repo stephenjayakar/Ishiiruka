@@ -110,10 +110,8 @@ bool DolphinApp::OnInit()
 	if (!wxApp::OnInit())
 		return false;
 	if (m_show_version)
-	{
 		std::cout << scm_slippi_semver_str << std::endl;
 		return false;
-	}
 	wxLog::SetLogLevel(0);
 	Bind(wxEVT_QUERY_END_SESSION, &DolphinApp::OnEndSession, this);
 	Bind(wxEVT_END_SESSION, &DolphinApp::OnEndSession, this);
@@ -298,7 +296,7 @@ void DolphinApp::OnInitCmdLine(wxCmdLineParser &parser)
 {
 	static const wxCmdLineEntryDesc desc[] = {
 	    {wxCMD_LINE_SWITCH, "h", "help", "Show this help message", wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP},
-	    {wxCMD_LINE_SWITCH, nullptr, "version", "Show the current app version", wxCMD_LINE_VAL_NONE,
+	    {wxCMD_LINE_SWITCH, "ve", "version", "Show the current app version", wxCMD_LINE_VAL_NONE,
 	     wxCMD_LINE_PARAM_OPTIONAL},
 	    {wxCMD_LINE_SWITCH, "d", "debugger", "Opens the debugger", wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL},
 	    {wxCMD_LINE_SWITCH, "l", "logger", "Opens the logger", wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL},
