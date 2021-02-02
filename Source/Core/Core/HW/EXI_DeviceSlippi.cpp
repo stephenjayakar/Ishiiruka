@@ -2523,6 +2523,7 @@ void CEXISlippi::prepareNewSeed()
 
 void CEXISlippi::handleReportGame(u8 *payload)
 {
+#ifndef LOCAL_TESTING
 	SlippiGameReporter::GameReport r;
 	r.durationFrames = Common::swap32(&payload[0]);
 
@@ -2543,6 +2544,7 @@ void CEXISlippi::handleReportGame(u8 *payload)
 	}
 
 	gameReporter->StartReport(r);
+#endif
 }
 
 void CEXISlippi::DMAWrite(u32 _uAddr, u32 _uSize)
