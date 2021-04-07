@@ -2231,7 +2231,16 @@ void CEXISlippi::handleReportGame(u8 *payload)
 
 void CEXISlippi::DMAWrite(u32 _uAddr, u32 _uSize)
 {
-	NOTICE_LOG(SLIPPI, "Stephen is a really smart guy!");
+	// logging it as I am removing all functionality.
+	INFO_LOG(EXPANSIONINTERFACE, "EXI SLIPPI DMAWrite: addr: 0x%08x size: %d", _uAddr, _uSize);
+
+	// TODO: send out CMD_STEPHEN every time this function is called.
+	u8 test[1] = {0x69};
+	u8 *testPointer = test;
+	m_slippiserver->write(testPointer, 1);
+	free(test);
+	// stephenjayakar: Removing all Slippi functionality for now
+	return;
 
 	u8 *memPtr = Memory::GetPointer(_uAddr);
 
