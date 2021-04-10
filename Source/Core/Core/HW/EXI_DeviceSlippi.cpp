@@ -2240,9 +2240,10 @@ void CEXISlippi::DMAWrite(u32 _uAddr, u32 _uSize)
 	m_slippiserver->write(testPointer, 1); */
 	// let's try logging out the camera data at the current frame
 	u32 addr = 0x80452C9C;
-	// float depth = (float) Memory::Read_U32(addr);
 	u8 *ptr = Memory::GetPointer(addr);
-	INFO_LOG(SLIPPI, "Camera depth?: addr: 0x%08x depth: %d %d %d %d", addr, *(ptr), *(ptr+1), *(ptr+2), *(ptr+3));
+	u32 swappedValue = Common::swap32(ptr);
+	float depth = *(float *)&swappedValue;
+	NOTICE_LOG(SLIPPI, "Camera depth?: addr: 0x%08x depth: %f", addr, depth);
 	// stephenjayakar: Removing all Slippi functionality for now
 	return;
 
