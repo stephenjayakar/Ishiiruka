@@ -2229,9 +2229,10 @@ void CEXISlippi::handleReportGame(u8 *payload)
 	gameReporter->StartReport(r);
 }
 
-// TODO: Check if this is signed
-u32 meow(u32 addr) {
-  return Memory::Read_U32(addr);
+float addrToFloat(u32 addr) {
+	u8 *ptr = Memory::GetPointer(addr);
+	u32 swappedValue = Common::swap32(ptr);
+	return *(float *) &swappedValue;
 }
 
 void CEXISlippi::DMAWrite(u32 _uAddr, u32 _uSize)
@@ -2249,10 +2250,7 @@ void CEXISlippi::DMAWrite(u32 _uAddr, u32 _uSize)
 	// TODO: these address do not fucking work.
 	u32 xAddr = cameraStructBaseAddr + 0x84;
 	u32 yAddr = cameraStructBaseAddr + 0x88;
-	u8 *ptr = Memory::GetPointer(depthAddr);
-	u32 swappedValue = Common::swap32(ptr);
-	float depth = *(float *)&swappedValue;
-	NOTICE_LOG(SLIPPI, "Camera depth: %f, x: %d, y: %d", depthAddr, depth, meow(xAddr), meow(yAddr));
+	NOTICE_LOG(SLIPPI, "Camera depth: %f, x: %f, y: %f", addrToFloat(depthAddr), addrToFloat(xAddr), addrToFloat(yAddr));
 	// stephenjayakar: Removing all Slippi functionality for now
 	return;
 
