@@ -2229,8 +2229,31 @@ void CEXISlippi::handleReportGame(u8 *payload)
 	gameReporter->StartReport(r);
 }
 
+float addrToFloat(u32 addr) {
+	u8 *ptr = Memory::GetPointer(addr);
+	u32 swappedValue = Common::swap32(ptr);
+	return *(float *) &swappedValue;
+}
+
 void CEXISlippi::DMAWrite(u32 _uAddr, u32 _uSize)
 {
+	// logging it as I am removing all functionality.
+	INFO_LOG(SLIPPI, "EXI SLIPPI DMAWrite: addr: 0x%08x size: %d", _uAddr, _uSize);
+
+	// TODO: send out CMD_STEPHEN every time this function is called.
+	/* u8 test[1] = {0x69};
+	u8 *testPointer = test;
+	m_slippiserver->write(testPointer, 1); */
+	// let's try logging out the camera data at the current frame
+	u32 cameraStructBaseAddr = 0x80452C68;
+	u32 depthAddr = cameraStructBaseAddr + 0x34;
+	// TODO: these address do not fucking work.
+	u32 xAddr = cameraStructBaseAddr + 0x84;
+	u32 yAddr = cameraStructBaseAddr + 0x88;
+	NOTICE_LOG(SLIPPI, "Camera depth: %f, x: %f, y: %f", addrToFloat(depthAddr), addrToFloat(xAddr), addrToFloat(yAddr));
+	// stephenjayakar: Removing all Slippi functionality for now
+	return;
+
 	u8 *memPtr = Memory::GetPointer(_uAddr);
 
 	u32 bufLoc = 0;
